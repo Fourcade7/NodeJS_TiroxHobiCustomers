@@ -2,7 +2,7 @@ import express from "express"
 import { getLastRetaildemand } from "./amountCard.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 app.use(express.json());
 
@@ -19,7 +19,8 @@ async function getLastCustomer(){
     const response = await fetch(`https://api.digitalwallet.cards/api/v2/customers`,{
       method:"GET",
       headers:{
-       "X-API-Key": "a39d742f74273491ffd081a034eedd8f"
+       "X-API-Key": "392b523f48da5ed49425d6d874517483"
+       //"X-API-Key": "a39d742f74273491ffd081a034eedd8f"
        //"Authorization": "Bearer  0e4a364118a70d4ba0a2dd233a47b09fb28225e7"
       }
     });      // GET request
@@ -29,10 +30,19 @@ async function getLastCustomer(){
         
         
         const contact_id=data.data[0].id;
-        console.log(contact_id)
-        //newContragent(contact_id,`${first_name} ${last_name}`, mobile)
+        const surname= data.data[0].surname
+        const firstName= data.data[0].firstName
+        const phone= data.data[0].phone
+        
         lastCustomerId=data.data[0].id;
-        getLastCard(contact_id);
+        console.log(lastCustomerId)
+        console.log(contact_id)
+        console.log(firstName)
+        console.log(surname)
+        console.log(phone)
+
+        newLead(contact_id,firstName,surname,phone)
+        
 
     }else{
       console.log("another customer id")
@@ -50,6 +60,41 @@ async function getLastCustomer(){
   }
 
 }
+
+//NEW CONTACT HOBI
+async function newLead(contact_id,first_name,last_name,mobile) {
+
+  const data={
+      contact_id,
+      "type": "customer",
+      first_name,
+      last_name,
+      mobile,
+      "life_stage_id": "2"
+  }
+
+  try{
+
+      const response = await fetch("https://app.hobi.uz/connector/api/contactapi",{
+          method: "POST",
+          headers: {
+              "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyMyIsImp0aSI6ImMyNWIwZmU0MDFhOTgxMzkxNGQyMzYxOGFlYmJhNDRmYTc3YjQzNmIxMGJhODMwZTkwZjczNWEwNmE0MWExMWY4MmRmNjVjYjNiYzU0NWFlIiwiaWF0IjoxNzY2MDc5OTg5LjAxMzgzNSwibmJmIjoxNzY2MDc5OTg5LjAxMzgzNywiZXhwIjoxNzk3NjE1OTg5LjAwODgzNCwic3ViIjoiNDkiLCJzY29wZXMiOltdfQ.NPW-zjyY_opGYzOuqGYFqqhOp3OZLRlbXOuwO50v0E3VG1KH1Yle4ASHcXzxHrIpOPNskW7l5EwRjQJH8G0k1v0hqTgIrP3AmCabQjK05eEX-xBRy73vXbpVq2Q1rXXK_YVlMa0e2qmQ_M44DSmP4YFBSrbbWr2ITNm6OCkbRbvoN_u5BGOOBat__QoP4xV2I5JsiHFINNNZ0c-uzbg1zeMwTobhMRx_Bbc7pHYa8FmcG4NN_Lg-USTuuLesMm-XVsj-_ajDHnv08FFtImYNz5Z9KSduwZNC4NqcWlIB2Plh2oLIL_dMcFOQiXAgZJ6qIZKgEbZqTwA8cb5SrIRa83LUriYJuVnFftNAoaJFOuxxSjDVQKsPzg1ZsFJ-EvJif7HVhLQMEQfh20_83LZIoD26i8726SJNP2S97XiOpuH-Fp0vGFqCJUFYOSDb44KfCPmFOWMFeilBECsTLwLdtashhCV34yBIwSTysuu7qJvPXxXbn-V_Hzh9Gvyk0PQv09bxsIhlX8SHvqG2tC4T1RSDQNc-m3_azxBcuef4gWdA-rfMz3gOTsXQboIYDWwvf6NJGsewcNtU-r7tkfeauevzZNzH3x3vfJcFdf9cOIFfXhjWKjOUetDwwhjH3ey8k3nQWynsMiJUdbcPMmlNBI7aBRC0LcoAB48bk9idyvk",
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+
+      })
+
+      const result = await response.json();
+      console.log(result)
+
+  }catch(error){
+      console.log(error.message)
+  }
+  
+}
+
+
 //TIROX
 async function getLastCard(id){
   try{
@@ -76,7 +121,7 @@ async function getLastCard(id){
         const mobile=data.data[0].customer.phone;
 
         //newCustomer(contact_id, type, first_name, last_name, mobile);
-        newContragent(contact_id,`${first_name} ${last_name}`, mobile)
+        //newContragent(contact_id,`${first_name} ${last_name}`, mobile)
         lastCardId=data.data[0].id;
 
     }else{
@@ -155,8 +200,7 @@ async function newCustomer(contact_id,type,first_name,last_name,mobile) {
 //newCustomer();
 
 function myJob() {
-  //getLastCard()
-  getLastRetaildemand();
+
   getLastCustomer();
   console.log("every 5 second ");
 }
