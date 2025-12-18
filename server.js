@@ -19,7 +19,8 @@ async function getLastCustomer(){
     const response = await fetch(`https://api.digitalwallet.cards/api/v2/customers`,{
       method:"GET",
       headers:{
-       "X-API-Key": "392b523f48da5ed49425d6d874517483"
+       "X-API-Key": "664d3baf407ec7d33960f97fefa0bff0"
+       //"X-API-Key": "392b523f48da5ed49425d6d874517483"
        //"X-API-Key": "a39d742f74273491ffd081a034eedd8f"
        //"Authorization": "Bearer  0e4a364118a70d4ba0a2dd233a47b09fb28225e7"
       }
@@ -154,7 +155,8 @@ async function newContragent(id,name,phone) {
       const response = await fetch("https://api.moysklad.ru/api/remap/1.2/entity/counterparty", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer ef89f7033a291007f08df842eb0772b219d29247",
+        //"Authorization": "Bearer ef89f7033a291007f08df842eb0772b219d29247",
+        "Authorization": "Bearer a784ce68cdcc540208ec9553e28d5f0c6432d63b",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
