@@ -35,15 +35,15 @@ async function getLastCustomer(){
         const firstName= data.data[0].firstName
         const phone= data.data[0].phone
         
-        lastCustomerId=data.data[0].id;
+        
         console.log(lastCustomerId)
         console.log(contact_id)
         console.log(firstName)
         console.log(surname)
         console.log(phone)
 
-        newLead(contact_id,firstName,surname,phone)
-        
+        getLastCard(contact_id)
+        lastCustomerId=data.data[0].id;
 
     }else{
       console.log("another customer id")
@@ -103,7 +103,7 @@ async function getLastCard(id){
     const response = await fetch(`https://api.digitalwallet.cards/api/v2/cards/?itemsPerPage=1000&customerId=${id}`,{
       method:"GET",
       headers:{
-       "X-API-Key": "a39d742f74273491ffd081a034eedd8f"
+       "X-API-Key": "664d3baf407ec7d33960f97fefa0bff0"
        //"Authorization": "Bearer  0e4a364118a70d4ba0a2dd233a47b09fb28225e7"
       }
     });      // GET request
@@ -123,7 +123,11 @@ async function getLastCard(id){
 
         //newCustomer(contact_id, type, first_name, last_name, mobile);
         //newContragent(contact_id,`${first_name} ${last_name}`, mobile)
+        newLead(contact_id,first_name,last_name,mobile)
+        
         lastCardId=data.data[0].id;
+
+
 
     }else{
       console.log("another card id")
